@@ -1,0 +1,10 @@
+pypdf2 
+tabula-py 
+langchain-openai
+python-dotenv
+anthropic
+sqlalchemy
+transformers[torch]
+langchain
+torch
+streamlit
