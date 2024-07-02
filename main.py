@@ -8,9 +8,7 @@ import time  # Import time for simulating delays (optional)
 
 def load_data():
     
-    # disable Load Data button
-    st.button('Load Data', disabled=True)
-    
+        
     
     pdf1_path = r'static\pdf\Bond_Encashment.pdf'
     pdf2_path = r'static\pdf\Bond_Purchase.pdf'
@@ -37,9 +35,7 @@ def load_data():
     party_columns = ['SrNo', 'DateOfEncashment', 'PartyName', 'PartyAccountNo', 'Prefix' , 'BondNumber', 'Denominations', 'PayBranchCode', 'PayTeller']
     purchaser_columns = ['SrNo', 'ReferenceNo', 'JournalDate', 'DateOfPurchase', 'DateOfExpiry', 'PurchaserName', 'Prefix','BondNumber', 'Denominations', 'IssueBranchCode', 'IssueTeller', 'Status']
     
-    # erase the database
-    db.erase_database(conn)
-    
+        
     
     # Insert data into the database with updates to the progress bar
     for index, df1 in enumerate(tables_pdf1, start=1):
@@ -66,15 +62,34 @@ def main():
         load_data()
 
     conn = db.connect()
-    agent_executor = qp.create_agent(r'static\db\political_bonds.db')
+    
     user_query = st.text_input("Please enter your query in natural language:")
     
     if st.button('Execute Query'):
         if user_query:
             with st.spinner('Processing your query...'):
-                sql_query = qp.translate_and_execute_query(agent_executor, user_query)
-                st.write(f"Answer: {sql_query}")
-            st.success('Done!')
+                agent_executor = qp.create_agent(r'static\db\political_bonds.db')
+                answer , sql_query = qp.translate_and_execute_query(agent_executor, user_query)
+                rows = qp.execute_sql_query(conn, sql_query)
+                response = qp.format_response(rows)
+                st.write(f"Answer as sentence : {answer}")
+                st.caption(f"Sql Query : {sql_query}")
+                st.success(response)
+                
+                
+                # try:
+                #     response_raw = qp.process_without_agent(conn, user_query)
+                #     st.write(f"Answer as number (strach code , for submission) : {response_raw}")
+                
+                # except:
+                #     pass
+                
+                
+                # execute the query
+                
+                
+                
+                
         else:
             st.write("Please enter a query to execute.")
     
