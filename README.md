@@ -10,22 +10,7 @@ This project extracts data from PDF files containing details about political bon
 - **Natural Language Queries**: Allows users to enter queries in natural language and converts these into SQL queries.
 - **Streamlit Web Interface**: Provides a user-friendly interface to interact with the data.
 
-## Project Structure
-```
-political_bonds/
-│
-├── modules/
-│   ├── __init__.py
-│   ├── database.py          # Module to handle database operations
-│   ├── extract.py           # Module to extract data from PDFs
-│   └── query_processor.py   # Module to process queries using AI
-│
-├── static/
-│   ├── pdf/                 # Directory containing PDF files
-│   └── db/                  # Directory containing SQLite database file
-│
-└── main.py                  # Main script to run the Streamlit app
-```
+
 
 ## Setup
 ### Requirements
