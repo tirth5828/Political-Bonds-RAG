@@ -9,3 +9,5 @@ langchain
 torch
 streamlit
 langchain-community
+langchain-anthropic
+langchain-openai
