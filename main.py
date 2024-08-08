@@ -4,12 +4,8 @@ import modules.database as db
 import modules.query_processor as qp
 from tqdm import tqdm
 
-import time  # Import time for simulating delays (optional)
-
 def load_data():
-    
-        
-    
+
     pdf1_path = r'static\pdf\Bond_Encashment.pdf'
     pdf2_path = r'static\pdf\Bond_Purchase.pdf'
     st.write('Starting data extraction process...')
@@ -58,6 +54,7 @@ def load_data():
 def main():
     st.title('Political Bonds Data Processing')
     st.balloons()
+    api_key = st.sidebar.text_input("API Key", type="password")
     if st.button('Load Data'):
         load_data()
 
@@ -68,28 +65,13 @@ def main():
     if st.button('Execute Query'):
         if user_query:
             with st.spinner('Processing your query...'):
-                agent_executor = qp.create_agent(r'static\db\political_bonds.db')
+                agent_executor = qp.create_agent(r'static\db\political_bonds.db' , api_key)
                 answer , sql_query = qp.translate_and_execute_query(agent_executor, user_query)
                 rows = qp.execute_sql_query(conn, sql_query)
                 response = qp.format_response(rows)
                 st.write(f"Answer as sentence : {answer}")
                 st.caption(f"Sql Query : {sql_query}")
                 st.success(response)
-                
-                
-                # try:
-                #     response_raw = qp.process_without_agent(conn, user_query)
-                #     st.write(f"Answer as number (strach code , for submission) : {response_raw}")
-                
-                # except:
-                #     pass
-                
-                
-                # execute the query
-                
-                
-                
-                
         else:
             st.write("Please enter a query to execute.")
     

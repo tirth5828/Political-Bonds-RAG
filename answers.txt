@@ -1,0 +1,50 @@
+Question: What is the total amount encashed by All India Anna Dravida Munnetra Kazhagam party on April 15, 2024?
+Answer: The All India Anna Dravida Munnetra Kazhagam party did not encash any amount on April 15, 2024.
+SQL Query: SELECT SUM(Denominations) as TotalEncashed FROM PartyTransactions WHERE PartyName = 'ALL INDIA ANNA DRAVIDA MUNNETRA KAZHAGAM' AND DateOfEncashment = '2024-04-15'
+Response: None
+
+Question: How many bonds are purchased by PHL FINIVEST Pvt Ltd on April 12 in 2019?
+Answer: PHL FINIVEST Pvt Ltd did not purchase any bonds on April 12, 2019.
+SQL Query: SELECT COUNT(*) FROM PurchaserTransactions WHERE PurchaserName = 'PHL FINIVEST Pvt Ltd' AND DateOfPurchase = '2019-04-12'
+Response: 0
+
+Question: What is the contribution to All India Congress Committee by Ravinder Agarwal?
+Answer: There is no recorded contribution to the All India Congress Committee by Ravinder Agarwal in the database.
+SQL Query: SELECT SUM(PurchaserTransactions.Denominations) as Contribution FROM PurchaserTransactions INNER JOIN PartyTransactions ON PurchaserTransactions.BondNumber = PartyTransactions.BondNumber AND PurchaserTransactions.Prefix = PartyTransactions.Prefix WHERE PurchaserTransactions.PurchaserName = 'Ravinder Agarwal' AND PartyTransactions.PartyName = 'All India Congress Committee'
+Response: None
+
+Question: What is the total amount encashed by Dravida Munnetra Kazhagam?
+Answer: The total amount encashed by Dravida Munnetra Kazhagam is not available in the database.
+SQL Query: SELECT SUM(Denominations) as TotalEncashed FROM PartyTransactions WHERE PartyName = 'DRAVIDA MUNNETRA KAZHAGAM'
+Response: None
+
+Question: What is the total bond amount purchased by UNITED PHOSPHORUS INDIA LLP on 15/Nov/2022 ?
+Answer: The total bond amount purchased by UNITED PHOSPHORUS INDIA LLP on 15/Nov/2022 is 500,000,000.
+SQL Query: SELECT SUM(Denominations) as TotalBondAmount FROM PurchaserTransactions WHERE PurchaserName = 'UNITED PHOSPHORUS INDIA LLP' AND DateOfPurchase = '2022-11-15'
+Response: 500000000
+
+Question: What is the average amount encashed from bonds by the Dravida Munnetra Kazhagam party?
+Answer: The average amount encashed from bonds by the Dravida Munnetra Kazhagam party is not available in the database.
+SQL Query: SELECT AVG(Denominations) FROM PartyTransactions WHERE PartyName = 'DRAVIDA MUNNETRA KAZHAGAM'
+Response: None
+
+Question: What is the total bond amount enchased by BHARATIYA JANATA PARTY  on 11th October?
+Answer: The total bond amount encashed by BHARATIYA JANATA PARTY on 11th October of the most recent year available in the data is 790,000,000.
+SQL Query: SELECT SUM(Denominations) as TotalBondAmount FROM PartyTransactions WHERE PartyName = 'BHARATIYA JANATA PARTY' AND DateOfEncashment = (SELECT MAX(DateOfEncashment) FROM PartyTransactions WHERE PartyName = 'BHARATIYA JANATA PARTY' AND strftime('%m-%d', DateOfEncashment) = '10-11')
+Response: 790000000
+
+Question: What is the total amount (denomination) that is purchased on the day with maximum number of transactions by individuals or companies?
+Answer: The total amount purchased on 2019-04-18, the day with the maximum number of transactions, is 2,486,900,000 from parties and 1,976,670,000 from purchasers. Therefore, the total amount purchased on that day is 4,463,570,000.
+SQL Query: SELECT SUM(Denominations) AS TotalDenominations FROM PartyTransactions WHERE DateOfEncashment = '2019-04-18' UNION ALL SELECT SUM(Denominations) AS TotalDenominations FROM PurchaserTransactions WHERE DateOfPurchase = '2019-04-18'
+Response: 2486900000
+
+Question: How many individuals or companies have purchased more than 500 bonds?
+Answer: There are 2 individuals or companies that have purchased more than 500 bonds.
+SQL Query: SELECT COUNT(*) FROM (SELECT PurchaserName, COUNT(BondNumber) as bond_count FROM PurchaserTransactions GROUP BY PurchaserName HAVING bond_count > 500)
+Response: 2
+
+Question: How many individuals or companies purchased exactly 10 bonds?
+Answer: There are 87 individuals or companies that purchased exactly 10 bonds.
+SQL Query: SELECT COUNT(*) FROM (SELECT PurchaserName, COUNT(DISTINCT BondNumber) as BondCount FROM PurchaserTransactions GROUP BY PurchaserName HAVING BondCount = 10)
+Response: 87
+

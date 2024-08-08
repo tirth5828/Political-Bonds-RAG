@@ -4,11 +4,8 @@ import openai
 from openai import OpenAI
 
 
-api_key = get_openai_key()
-
-
 class GPT4Module:
-    def __init__(self):
+    def __init__(self , api_key):
         # new
 
         self.client = OpenAI(

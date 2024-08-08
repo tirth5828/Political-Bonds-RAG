@@ -100,3 +100,9 @@ def get_description_of_all_tables(conn):
         
     description_str = "\n\n".join([f"Table '{table}':\n{desc}" for table, desc in descriptions.items()])
     return description_str
+
+def get_tables_names(conn):
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cursor.fetchall()
+    return [table[0] for table in tables]

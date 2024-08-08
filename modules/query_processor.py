@@ -11,9 +11,8 @@ from modules.SQLHandler import SQLHandler
 from modules.prompt_creation import generate_sql_prompt
 
 
-api_key = get_openai_key()
 
-def create_agent(db_path):
+def create_agent(db_path , api_key):
     db = SQLDatabase.from_uri(f"sqlite:///{db_path}")
     llm = ChatOpenAI(api_key=api_key,model="gpt-4", temperature=0)
     agent_executor = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=False)
@@ -22,7 +21,6 @@ def create_agent(db_path):
 def translate_and_execute_query(agent_executor, user_query):
     handler = SQLHandler()
     response = agent_executor.invoke({"input": user_query},{'callbacks':[handler]})
-    print(handler.sql_result)
     return response["output"] , handler.sql_result[-1]
 
 def execute_sql_query(conn, sql_query):
@@ -38,7 +36,7 @@ def format_response(rows):
     return rows[0][0]
 
 
-def process_without_agent(conn , user_query):
+def process_without_agent(conn , user_query , api_key):
     
     # get database decsription
     description = get_description_of_all_tables(conn)
@@ -48,7 +46,7 @@ def process_without_agent(conn , user_query):
     
     
     # Generate SQL query through LLM
-    llm = GPT4Module()
+    llm = GPT4Module(api_key)
     sql_query = llm.execute_query(prompt)
     
     print(f"Translated SQL Query: {sql_query}")
