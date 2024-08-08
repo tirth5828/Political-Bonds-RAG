@@ -54,7 +54,7 @@ def load_data():
 def main():
     st.title('Political Bonds Data Processing')
     st.balloons()
-    api_key = st.sidebar.text_input("API Key", type="password")
+    api_key = st.sidebar.text_input("OpenAI API Key", type="password")
     if st.button('Load Data'):
         load_data()
 
